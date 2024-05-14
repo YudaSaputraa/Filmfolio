@@ -1,4 +1,4 @@
-package com.kom.foodapp.utils
+package com.kom.filmfolio.utils
 
 import android.text.SpannableStringBuilder
 import android.text.Spanned
