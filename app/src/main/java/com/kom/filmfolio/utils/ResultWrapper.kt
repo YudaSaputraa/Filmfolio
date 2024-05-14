@@ -1,4 +1,4 @@
-package com.kom.foodapp.utils
+package com.kom.filmfolio.utils
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
