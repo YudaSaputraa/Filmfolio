@@ -1,5 +1,7 @@
 package com.kom.filmfolio.presentation.home.adapter
 
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -10,6 +12,8 @@ import com.kom.filmfolio.R
 import com.kom.filmfolio.data.model.Movie
 import com.kom.filmfolio.databinding.FragmentHomeBinding
 import com.kom.filmfolio.databinding.ItemMovieBinding
+import com.kom.filmfolio.databinding.LayoutBannerBinding
+import kotlin.random.Random
 
 /**
 Written by Komang Yuda Saputra
@@ -20,6 +24,10 @@ class MovieAdapter(
 ) : RecyclerView.Adapter<MovieAdapter.ItemMovieViewHolder>() {
     private val language = "en-US"
     private val page = 1
+    private lateinit var bannerBinding: LayoutBannerBinding
+    private val bannerHandler = Handler(Looper.getMainLooper())
+    private var currentMovieIndex = 0
+    private lateinit var movies: List<Movie>
 
     class ItemMovieViewHolder(
         private val binding: ItemMovieBinding,
@@ -48,6 +56,31 @@ class MovieAdapter(
                 itemView.setOnClickListener { itemClick(this) }
             }
         }
+    }
+
+    fun bindMovieNowPlaying(
+        movies: List<Movie>,
+        language: String,
+        page: Int,
+        bannerBinding: LayoutBannerBinding,
+    ) {
+        this.movies = movies
+        this.bannerBinding = bannerBinding
+        updateBannerContent()
+    }
+
+    private fun updateBannerContent() {
+        val movie = movies[currentMovieIndex]
+        val baseUrlImage = "https://image.tmdb.org/t/p/w500"
+        bannerBinding.ivMovieImg.load(baseUrlImage + movie.backdropPath) {
+            crossfade(true)
+            error(R.mipmap.ic_launcher)
+        }
+        bannerBinding.tvMovieTitle.text = movie.title
+        bannerBinding.tvMovieDesc.text = movie.overview
+
+        currentMovieIndex = Random.nextInt(0, movies.size)
+        bannerHandler.postDelayed(::updateBannerContent, 7000)
     }
 
     private val asyncDataDiffer =
