@@ -4,8 +4,9 @@ import com.kom.filmfolio.data.datasource.movie.MovieDataSource
 import com.kom.filmfolio.data.mapper.toMovies
 import com.kom.filmfolio.data.model.Movie
 import com.kom.filmfolio.utils.ResultWrapper
-import com.kom.filmfolio.utils.proceedFlow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 /**
 Written by Komang Yuda Saputra
@@ -40,27 +41,47 @@ class MovieRepositoryImpl(
         language: String,
         page: Int,
     ): Flow<ResultWrapper<List<Movie>>> {
-        return proceedFlow { dataSource.getNowPlayingMovie(language, page).results.toMovies() }
+        return flow {
+            emit(ResultWrapper.Loading())
+            delay(1000)
+            val result = dataSource.getNowPlayingMovie(language, page).results.toMovies()
+            emit(ResultWrapper.Success(result))
+        }
     }
 
     override fun getPopularMovie(
         language: String,
         page: Int,
     ): Flow<ResultWrapper<List<Movie>>> {
-        return proceedFlow { dataSource.getPopularMovie(language, page).results.toMovies() }
+        return flow {
+            emit(ResultWrapper.Loading())
+            delay(1000)
+            val result = dataSource.getPopularMovie(language, page).results.toMovies()
+            emit(ResultWrapper.Success(result))
+        }
     }
 
     override fun getTopRelatedMovie(
         language: String,
         page: Int,
     ): Flow<ResultWrapper<List<Movie>>> {
-        return proceedFlow { dataSource.getTopRelatedMovie(language, page).results.toMovies() }
+        return flow {
+            emit(ResultWrapper.Loading())
+            delay(1000)
+            val result = dataSource.getTopRelatedMovie(language, page).results.toMovies()
+            emit(ResultWrapper.Success(result))
+        }
     }
 
     override fun getUpcomingMovie(
         language: String,
         page: Int,
     ): Flow<ResultWrapper<List<Movie>>> {
-        return proceedFlow { dataSource.getUpcomingMovie(language, page).results.toMovies() }
+        return flow {
+            emit(ResultWrapper.Loading())
+            delay(1000)
+            val result = dataSource.getUpcomingMovie(language, page).results.toMovies()
+            emit(ResultWrapper.Success(result))
+        }
     }
 }

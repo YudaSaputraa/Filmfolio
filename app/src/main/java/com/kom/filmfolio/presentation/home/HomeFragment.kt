@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kom.filmfolio.R
 import com.kom.filmfolio.data.model.Movie
 import com.kom.filmfolio.databinding.FragmentHomeBinding
 import com.kom.filmfolio.presentation.home.adapter.MovieAdapter
@@ -79,49 +82,213 @@ class HomeFragment : Fragment() {
         homeViewModel.getNowPlayingMovie(language, page).observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
                 doOnSuccess = {
+                    binding.rvUpcoming.isVisible = true
+                    binding.rvPopular.isVisible = true
+                    binding.rvTopRelated.isVisible = true
+                    binding.rvMovieNowPlaying.isVisible = true
+                    binding.shmProgress.isVisible = false
+                    binding.shmProgressPopular.isVisible = false
+                    binding.shmProgressTopRelated.isVisible = false
+                    binding.shmProgressUpcoming.isVisible = false
+                    binding.shmBanner.isVisible = false
                     result.payload?.let {
                         movieItems = it
                         bindMovieNowPlaying(it, language, page)
+
+                        movieUpcomingAdapter.bindMovieNowPlaying(
+                            it,
+                            language,
+                            page,
+                            binding.layoutBanner,
+                        )
                     }
+                    setMenuTitleConstraint(false)
                 },
                 doOnError = {
+                    binding.rvUpcoming.isVisible = false
+                    binding.rvPopular.isVisible = false
+                    binding.rvTopRelated.isVisible = false
+                    binding.rvMovieNowPlaying.isVisible = false
+                    binding.shmBanner.isVisible = false
                     Log.d("Load Data : ", "getMovieData: ${it.exception?.message}")
+                    setMenuTitleConstraint(false)
+                },
+                doOnLoading = {
+                    binding.rvUpcoming.isVisible = false
+                    binding.rvPopular.isVisible = false
+                    binding.rvTopRelated.isVisible = false
+                    binding.rvMovieNowPlaying.isVisible = false
+                    binding.shmProgress.isVisible = true
+                    binding.shmProgressPopular.isVisible = true
+                    binding.shmProgressTopRelated.isVisible = true
+                    binding.shmProgressUpcoming.isVisible = true
+                    binding.shmBanner.isVisible = true
+
+                    setMenuTitleConstraint(true)
+                },
+                doOnEmpty = {
+                    binding.rvUpcoming.isVisible = false
+                    binding.rvPopular.isVisible = false
+                    binding.rvTopRelated.isVisible = false
+                    binding.rvMovieNowPlaying.isVisible = false
+                    binding.shmProgress.isVisible = false
+                    binding.shmProgressPopular.isVisible = false
+                    binding.shmProgressTopRelated.isVisible = false
+                    binding.shmProgressUpcoming.isVisible = false
+                    binding.shmBanner.isVisible = false
+                    setMenuTitleConstraint(false)
                 },
             )
         }
         homeViewModel.getPopularMovie(language, page).observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
                 doOnSuccess = {
+                    binding.rvUpcoming.isVisible = true
+                    binding.rvPopular.isVisible = true
+                    binding.rvTopRelated.isVisible = true
+                    binding.rvMovieNowPlaying.isVisible = true
+                    binding.shmProgress.isVisible = false
+                    binding.shmProgressPopular.isVisible = false
+                    binding.shmProgressTopRelated.isVisible = false
+                    binding.shmProgressUpcoming.isVisible = false
+                    binding.shmBanner.isVisible = false
                     result.payload?.let {
                         bindMoviePopular(it, language, page)
                     }
+                    setMenuTitleConstraint(false)
                 },
                 doOnError = {
+                    binding.rvUpcoming.isVisible = false
+                    binding.rvPopular.isVisible = false
+                    binding.rvTopRelated.isVisible = false
+                    binding.rvMovieNowPlaying.isVisible = false
+                    binding.shmBanner.isVisible = false
                     Log.d("Load Data : ", "getMovieData: ${it.exception?.message}")
+                    setMenuTitleConstraint(false)
+                },
+                doOnLoading = {
+                    binding.rvUpcoming.isVisible = false
+                    binding.rvPopular.isVisible = false
+                    binding.rvTopRelated.isVisible = false
+                    binding.rvMovieNowPlaying.isVisible = false
+                    binding.shmProgress.isVisible = true
+                    binding.shmProgressPopular.isVisible = true
+                    binding.shmProgressTopRelated.isVisible = true
+                    binding.shmProgressUpcoming.isVisible = true
+                    binding.shmBanner.isVisible = true
+                    setMenuTitleConstraint(true)
+                },
+                doOnEmpty = {
+                    binding.rvUpcoming.isVisible = false
+                    binding.rvPopular.isVisible = false
+                    binding.rvTopRelated.isVisible = false
+                    binding.rvMovieNowPlaying.isVisible = false
+                    binding.shmProgress.isVisible = false
+                    binding.shmProgressPopular.isVisible = false
+                    binding.shmProgressTopRelated.isVisible = false
+                    binding.shmProgressUpcoming.isVisible = false
+                    binding.shmBanner.isVisible = false
+                    setMenuTitleConstraint(true)
                 },
             )
         }
         homeViewModel.getUpcomingMovie(language, page).observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
                 doOnSuccess = {
+                    binding.rvUpcoming.isVisible = true
+                    binding.rvPopular.isVisible = true
+                    binding.rvTopRelated.isVisible = true
+                    binding.rvMovieNowPlaying.isVisible = true
+                    binding.shmProgress.isVisible = false
+                    binding.shmProgressPopular.isVisible = false
+                    binding.shmProgressTopRelated.isVisible = false
+                    binding.shmProgressUpcoming.isVisible = false
+                    binding.shmBanner.isVisible = false
                     result.payload?.let {
                         bindMovieUpcoming(it, language, page)
                     }
+                    setMenuTitleConstraint(false)
                 },
                 doOnError = {
+                    binding.rvUpcoming.isVisible = false
+                    binding.rvPopular.isVisible = false
+                    binding.rvTopRelated.isVisible = false
+                    binding.rvMovieNowPlaying.isVisible = false
+                    binding.shmBanner.isVisible = false
                     Log.d("Load Data : ", "getMovieData: ${it.exception?.message}")
+                    setMenuTitleConstraint(false)
+                },
+                doOnLoading = {
+                    binding.rvUpcoming.isVisible = false
+                    binding.rvPopular.isVisible = false
+                    binding.rvTopRelated.isVisible = false
+                    binding.rvMovieNowPlaying.isVisible = false
+                    binding.shmProgress.isVisible = true
+                    binding.shmProgressPopular.isVisible = true
+                    binding.shmProgressTopRelated.isVisible = true
+                    binding.shmProgressUpcoming.isVisible = true
+                    binding.shmBanner.isVisible = true
+                    setMenuTitleConstraint(true)
+                },
+                doOnEmpty = {
+                    binding.rvUpcoming.isVisible = false
+                    binding.rvPopular.isVisible = false
+                    binding.rvTopRelated.isVisible = false
+                    binding.rvMovieNowPlaying.isVisible = false
+                    binding.shmProgress.isVisible = false
+                    binding.shmProgressPopular.isVisible = false
+                    binding.shmProgressTopRelated.isVisible = false
+                    binding.shmProgressUpcoming.isVisible = false
+                    binding.shmBanner.isVisible = false
+                    setMenuTitleConstraint(false)
                 },
             )
         }
         homeViewModel.getTopRelatedMovie(language, page).observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
                 doOnSuccess = {
+                    binding.rvUpcoming.isVisible = true
+                    binding.rvPopular.isVisible = true
+                    binding.rvTopRelated.isVisible = true
+                    binding.rvMovieNowPlaying.isVisible = true
+                    binding.shmProgress.isVisible = false
+                    binding.shmProgressPopular.isVisible = false
+                    binding.shmProgressTopRelated.isVisible = false
+                    binding.shmProgressUpcoming.isVisible = false
                     result.payload?.let {
                         bindMovieTopRelated(it, language, page)
                     }
+                    setMenuTitleConstraint(false)
                 },
                 doOnError = {
+                    binding.rvUpcoming.isVisible = false
+                    binding.rvPopular.isVisible = false
+                    binding.rvTopRelated.isVisible = false
+                    binding.rvMovieNowPlaying.isVisible = false
                     Log.d("Load Data : ", "getMovieData: ${it.exception?.message}")
+                    setMenuTitleConstraint(false)
+                },
+                doOnLoading = {
+                    binding.rvUpcoming.isVisible = false
+                    binding.rvPopular.isVisible = false
+                    binding.rvTopRelated.isVisible = false
+                    binding.rvMovieNowPlaying.isVisible = false
+                    binding.shmProgress.isVisible = true
+                    binding.shmProgressPopular.isVisible = true
+                    binding.shmProgressTopRelated.isVisible = true
+                    binding.shmProgressUpcoming.isVisible = true
+                    setMenuTitleConstraint(true)
+                },
+                doOnEmpty = {
+                    binding.rvUpcoming.isVisible = false
+                    binding.rvPopular.isVisible = false
+                    binding.rvTopRelated.isVisible = false
+                    binding.rvMovieNowPlaying.isVisible = false
+                    binding.shmProgress.isVisible = false
+                    binding.shmProgressPopular.isVisible = false
+                    binding.shmProgressTopRelated.isVisible = false
+                    binding.shmProgressUpcoming.isVisible = false
+                    setMenuTitleConstraint(false)
                 },
             )
         }
@@ -184,5 +351,89 @@ class HomeFragment : Fragment() {
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = this@HomeFragment.movieTopRelatedAdapter
         }
+    }
+
+    private fun setMenuTitleConstraint(isLoading: Boolean) {
+        val constraintSet = ConstraintSet()
+        constraintSet.clone(binding.clContent)
+
+        if (isLoading) {
+            constraintSet.setVisibility(R.id.layout_banner, ConstraintSet.GONE)
+            constraintSet.connect(
+                R.id.tv_now_playing_title,
+                ConstraintSet.TOP,
+                R.id.shm_banner,
+                ConstraintSet.BOTTOM,
+            )
+            constraintSet.connect(
+                R.id.shm_progress,
+                ConstraintSet.TOP,
+                R.id.tv_now_playing_title,
+                ConstraintSet.BOTTOM,
+            )
+            constraintSet.connect(
+                R.id.tv_popular_title,
+                ConstraintSet.TOP,
+                R.id.shm_progress,
+                ConstraintSet.BOTTOM,
+            )
+            constraintSet.connect(
+                R.id.shm_progress_popular,
+                ConstraintSet.TOP,
+                R.id.tv_popular_title,
+                ConstraintSet.BOTTOM,
+            )
+            constraintSet.connect(
+                R.id.tv_upcoming_title,
+                ConstraintSet.TOP,
+                R.id.shm_progress_popular,
+                ConstraintSet.BOTTOM,
+            )
+            constraintSet.connect(
+                R.id.shm_progress_upcoming,
+                ConstraintSet.TOP,
+                R.id.tv_upcoming_title,
+                ConstraintSet.BOTTOM,
+            )
+            constraintSet.connect(
+                R.id.tv_top_related_title,
+                ConstraintSet.TOP,
+                R.id.shm_progress_upcoming,
+                ConstraintSet.BOTTOM,
+            )
+            constraintSet.connect(
+                R.id.shm_progress_top_related,
+                ConstraintSet.TOP,
+                R.id.tv_top_related_title,
+                ConstraintSet.BOTTOM,
+            )
+        } else {
+            constraintSet.setVisibility(R.id.layout_banner, ConstraintSet.VISIBLE)
+            constraintSet.connect(
+                R.id.tv_now_playing_title,
+                ConstraintSet.TOP,
+                R.id.layout_banner,
+                ConstraintSet.BOTTOM,
+            )
+            constraintSet.connect(
+                R.id.tv_popular_title,
+                ConstraintSet.TOP,
+                R.id.rv_movie_now_playing,
+                ConstraintSet.BOTTOM,
+            )
+            constraintSet.connect(
+                R.id.tv_upcoming_title,
+                ConstraintSet.TOP,
+                R.id.rv_popular,
+                ConstraintSet.BOTTOM,
+            )
+            constraintSet.connect(
+                R.id.tv_top_related_title,
+                ConstraintSet.TOP,
+                R.id.rv_upcoming,
+                ConstraintSet.BOTTOM,
+            )
+        }
+        constraintSet.applyTo(binding.clContent)
     }
 }
