@@ -22,6 +22,7 @@ retrofit = "2.9.0"
 okhttp = "4.11.0"
 http-logging = "3.8.0"
 shimmer = "0.5.0"
+paging = "3.3.0"
 
 
 [libraries]
@@ -65,7 +66,8 @@ koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = 
 # Shimmer
 shimmer-android = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shimmer" }
 
-
+# paging
+paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

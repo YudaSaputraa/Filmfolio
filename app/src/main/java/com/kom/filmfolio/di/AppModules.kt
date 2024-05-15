@@ -6,6 +6,7 @@ import com.kom.filmfolio.data.repository.MovieRepository
 import com.kom.filmfolio.data.repository.MovieRepositoryImpl
 import com.kom.filmfolio.data.source.network.network.FilmfolioApiService
 import com.kom.filmfolio.presentation.home.HomeViewModel
+import com.kom.filmfolio.presentation.seemore.SeeMoreViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -32,6 +33,7 @@ object AppModules {
     private val viewModelModule =
         module {
             viewModelOf(::HomeViewModel)
+            viewModelOf(::SeeMoreViewModel)
         }
 
     val modules =

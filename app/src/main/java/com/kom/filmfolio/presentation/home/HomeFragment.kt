@@ -1,5 +1,6 @@
 package com.kom.filmfolio.presentation.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -17,6 +18,7 @@ import com.kom.filmfolio.R
 import com.kom.filmfolio.data.model.Movie
 import com.kom.filmfolio.databinding.FragmentHomeBinding
 import com.kom.filmfolio.presentation.home.adapter.MovieAdapter
+import com.kom.filmfolio.presentation.seemore.SeeMoreActivity
 import com.kom.filmfolio.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.random.Random
@@ -76,6 +78,14 @@ class HomeFragment : Fragment() {
 
         bindMovieList()
         getMovieData("en-US", 1)
+        setClickListener()
+    }
+
+    private fun setClickListener() {
+        binding.ivMoreNowPlaying.setOnClickListener {
+            val intent = Intent(requireContext(), SeeMoreActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun startBannerRotation() {
