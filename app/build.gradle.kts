@@ -115,4 +115,5 @@ dependencies {
     implementation(libs.http.logging)
 
     implementation(libs.shimmer.android)
+    implementation(libs.paging)
 }
