@@ -1,6 +1,8 @@
 package com.kom.filmfolio.presentation.home
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,17 +12,23 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
 import com.kom.filmfolio.R
 import com.kom.filmfolio.data.model.Movie
 import com.kom.filmfolio.databinding.FragmentHomeBinding
 import com.kom.filmfolio.presentation.home.adapter.MovieAdapter
 import com.kom.filmfolio.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.random.Random
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val homeViewModel: HomeViewModel by viewModel()
-    private var movieItems: List<Movie>? = null
+    private var nowPlayingMovieLoaded: List<Movie>? = null
+    private var isFirstBanner: Boolean = true
+
+    private var bannerTimer: Runnable? = null
+    private val handler = Handler(Looper.getMainLooper())
 
     private val movieNowPlayingAdapter: MovieAdapter by lazy {
         MovieAdapter {
@@ -67,13 +75,41 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         bindMovieList()
-//        loadMovieData()
         getMovieData("en-US", 1)
     }
 
-//    private fun loadMovieData() {
-//        movieItems?.let { bindMovie(it, "en-US", 1) ?: getMovieData("en-US", 1) }
-//    }
+    private fun startBannerRotation() {
+        bannerTimer =
+            object : Runnable {
+                override fun run() {
+                    updateBannerWithRandomMovie()
+                    handler.postDelayed(this, if (isFirstBanner) 0 else 5000)
+                }
+            }
+
+        handler.postDelayed(bannerTimer!!, 0)
+        isFirstBanner = false
+    }
+
+    private fun updateBannerWithRandomMovie() {
+        val randomMovie = nowPlayingMovieLoaded?.get(Random.nextInt(nowPlayingMovieLoaded!!.size))
+        randomMovie?.let {
+            updateBanner(randomMovie)
+        }
+    }
+
+    private fun updateBanner(movie: Movie) {
+        binding.apply {
+            val baseUrlImage = "https://image.tmdb.org/t/p/original"
+            layoutBanner.ivMovieImg.load(baseUrlImage + movie.backdropPath) {
+                crossfade(true)
+                error(R.mipmap.ic_launcher)
+            }
+
+            layoutBanner.tvMovieTitle.text = movie.title
+            layoutBanner.tvMovieDesc.text = movie.overview
+        }
+    }
 
     private fun getMovieData(
         language: String,
@@ -82,59 +118,33 @@ class HomeFragment : Fragment() {
         homeViewModel.getNowPlayingMovie(language, page).observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
                 doOnSuccess = {
-                    binding.rvUpcoming.isVisible = true
-                    binding.rvPopular.isVisible = true
-                    binding.rvTopRelated.isVisible = true
                     binding.rvMovieNowPlaying.isVisible = true
                     binding.shmProgress.isVisible = false
-                    binding.shmProgressPopular.isVisible = false
-                    binding.shmProgressTopRelated.isVisible = false
-                    binding.shmProgressUpcoming.isVisible = false
                     binding.shmBanner.isVisible = false
                     result.payload?.let {
-                        movieItems = it
                         bindMovieNowPlaying(it, language, page)
 
-                        movieUpcomingAdapter.bindMovieNowPlaying(
-                            it,
-                            language,
-                            page,
-                            binding.layoutBanner,
-                        )
+                        nowPlayingMovieLoaded = it
+                        startBannerRotation()
                     }
                     setMenuTitleConstraint(false)
                 },
                 doOnError = {
-                    binding.rvUpcoming.isVisible = false
-                    binding.rvPopular.isVisible = false
-                    binding.rvTopRelated.isVisible = false
                     binding.rvMovieNowPlaying.isVisible = false
                     binding.shmBanner.isVisible = false
                     Log.d("Load Data : ", "getMovieData: ${it.exception?.message}")
                     setMenuTitleConstraint(false)
                 },
                 doOnLoading = {
-                    binding.rvUpcoming.isVisible = false
-                    binding.rvPopular.isVisible = false
-                    binding.rvTopRelated.isVisible = false
                     binding.rvMovieNowPlaying.isVisible = false
                     binding.shmProgress.isVisible = true
-                    binding.shmProgressPopular.isVisible = true
-                    binding.shmProgressTopRelated.isVisible = true
-                    binding.shmProgressUpcoming.isVisible = true
                     binding.shmBanner.isVisible = true
 
                     setMenuTitleConstraint(true)
                 },
                 doOnEmpty = {
-                    binding.rvUpcoming.isVisible = false
-                    binding.rvPopular.isVisible = false
-                    binding.rvTopRelated.isVisible = false
                     binding.rvMovieNowPlaying.isVisible = false
                     binding.shmProgress.isVisible = false
-                    binding.shmProgressPopular.isVisible = false
-                    binding.shmProgressTopRelated.isVisible = false
-                    binding.shmProgressUpcoming.isVisible = false
                     binding.shmBanner.isVisible = false
                     setMenuTitleConstraint(false)
                 },
@@ -143,14 +153,8 @@ class HomeFragment : Fragment() {
         homeViewModel.getPopularMovie(language, page).observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
                 doOnSuccess = {
-                    binding.rvUpcoming.isVisible = true
                     binding.rvPopular.isVisible = true
-                    binding.rvTopRelated.isVisible = true
-                    binding.rvMovieNowPlaying.isVisible = true
-                    binding.shmProgress.isVisible = false
                     binding.shmProgressPopular.isVisible = false
-                    binding.shmProgressTopRelated.isVisible = false
-                    binding.shmProgressUpcoming.isVisible = false
                     binding.shmBanner.isVisible = false
                     result.payload?.let {
                         bindMoviePopular(it, language, page)
@@ -158,35 +162,20 @@ class HomeFragment : Fragment() {
                     setMenuTitleConstraint(false)
                 },
                 doOnError = {
-                    binding.rvUpcoming.isVisible = false
                     binding.rvPopular.isVisible = false
-                    binding.rvTopRelated.isVisible = false
-                    binding.rvMovieNowPlaying.isVisible = false
                     binding.shmBanner.isVisible = false
                     Log.d("Load Data : ", "getMovieData: ${it.exception?.message}")
                     setMenuTitleConstraint(false)
                 },
                 doOnLoading = {
-                    binding.rvUpcoming.isVisible = false
                     binding.rvPopular.isVisible = false
-                    binding.rvTopRelated.isVisible = false
-                    binding.rvMovieNowPlaying.isVisible = false
-                    binding.shmProgress.isVisible = true
                     binding.shmProgressPopular.isVisible = true
-                    binding.shmProgressTopRelated.isVisible = true
-                    binding.shmProgressUpcoming.isVisible = true
                     binding.shmBanner.isVisible = true
                     setMenuTitleConstraint(true)
                 },
                 doOnEmpty = {
-                    binding.rvUpcoming.isVisible = false
                     binding.rvPopular.isVisible = false
-                    binding.rvTopRelated.isVisible = false
-                    binding.rvMovieNowPlaying.isVisible = false
-                    binding.shmProgress.isVisible = false
                     binding.shmProgressPopular.isVisible = false
-                    binding.shmProgressTopRelated.isVisible = false
-                    binding.shmProgressUpcoming.isVisible = false
                     binding.shmBanner.isVisible = false
                     setMenuTitleConstraint(true)
                 },
@@ -196,12 +185,6 @@ class HomeFragment : Fragment() {
             result.proceedWhen(
                 doOnSuccess = {
                     binding.rvUpcoming.isVisible = true
-                    binding.rvPopular.isVisible = true
-                    binding.rvTopRelated.isVisible = true
-                    binding.rvMovieNowPlaying.isVisible = true
-                    binding.shmProgress.isVisible = false
-                    binding.shmProgressPopular.isVisible = false
-                    binding.shmProgressTopRelated.isVisible = false
                     binding.shmProgressUpcoming.isVisible = false
                     binding.shmBanner.isVisible = false
                     result.payload?.let {
@@ -211,33 +194,18 @@ class HomeFragment : Fragment() {
                 },
                 doOnError = {
                     binding.rvUpcoming.isVisible = false
-                    binding.rvPopular.isVisible = false
-                    binding.rvTopRelated.isVisible = false
-                    binding.rvMovieNowPlaying.isVisible = false
                     binding.shmBanner.isVisible = false
                     Log.d("Load Data : ", "getMovieData: ${it.exception?.message}")
                     setMenuTitleConstraint(false)
                 },
                 doOnLoading = {
                     binding.rvUpcoming.isVisible = false
-                    binding.rvPopular.isVisible = false
-                    binding.rvTopRelated.isVisible = false
-                    binding.rvMovieNowPlaying.isVisible = false
-                    binding.shmProgress.isVisible = true
-                    binding.shmProgressPopular.isVisible = true
-                    binding.shmProgressTopRelated.isVisible = true
                     binding.shmProgressUpcoming.isVisible = true
                     binding.shmBanner.isVisible = true
                     setMenuTitleConstraint(true)
                 },
                 doOnEmpty = {
                     binding.rvUpcoming.isVisible = false
-                    binding.rvPopular.isVisible = false
-                    binding.rvTopRelated.isVisible = false
-                    binding.rvMovieNowPlaying.isVisible = false
-                    binding.shmProgress.isVisible = false
-                    binding.shmProgressPopular.isVisible = false
-                    binding.shmProgressTopRelated.isVisible = false
                     binding.shmProgressUpcoming.isVisible = false
                     binding.shmBanner.isVisible = false
                     setMenuTitleConstraint(false)
@@ -247,47 +215,28 @@ class HomeFragment : Fragment() {
         homeViewModel.getTopRelatedMovie(language, page).observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
                 doOnSuccess = {
-                    binding.rvUpcoming.isVisible = true
-                    binding.rvPopular.isVisible = true
                     binding.rvTopRelated.isVisible = true
-                    binding.rvMovieNowPlaying.isVisible = true
-                    binding.shmProgress.isVisible = false
-                    binding.shmProgressPopular.isVisible = false
+
                     binding.shmProgressTopRelated.isVisible = false
-                    binding.shmProgressUpcoming.isVisible = false
+                    binding.shmBanner.isVisible = false
                     result.payload?.let {
                         bindMovieTopRelated(it, language, page)
                     }
                     setMenuTitleConstraint(false)
                 },
                 doOnError = {
-                    binding.rvUpcoming.isVisible = false
-                    binding.rvPopular.isVisible = false
                     binding.rvTopRelated.isVisible = false
-                    binding.rvMovieNowPlaying.isVisible = false
                     Log.d("Load Data : ", "getMovieData: ${it.exception?.message}")
                     setMenuTitleConstraint(false)
                 },
                 doOnLoading = {
-                    binding.rvUpcoming.isVisible = false
-                    binding.rvPopular.isVisible = false
                     binding.rvTopRelated.isVisible = false
-                    binding.rvMovieNowPlaying.isVisible = false
-                    binding.shmProgress.isVisible = true
-                    binding.shmProgressPopular.isVisible = true
                     binding.shmProgressTopRelated.isVisible = true
-                    binding.shmProgressUpcoming.isVisible = true
                     setMenuTitleConstraint(true)
                 },
                 doOnEmpty = {
-                    binding.rvUpcoming.isVisible = false
-                    binding.rvPopular.isVisible = false
                     binding.rvTopRelated.isVisible = false
-                    binding.rvMovieNowPlaying.isVisible = false
-                    binding.shmProgress.isVisible = false
-                    binding.shmProgressPopular.isVisible = false
                     binding.shmProgressTopRelated.isVisible = false
-                    binding.shmProgressUpcoming.isVisible = false
                     setMenuTitleConstraint(false)
                 },
             )
@@ -299,7 +248,6 @@ class HomeFragment : Fragment() {
         language: String,
         page: Int,
     ) {
-        this.movieItems = movies
         movieNowPlayingAdapter.submitData(movies, language, page)
     }
 
@@ -308,7 +256,6 @@ class HomeFragment : Fragment() {
         language: String,
         page: Int,
     ) {
-        this.movieItems = movies
         moviePopularAdapter.submitData(movies, language, page)
     }
 
@@ -317,7 +264,6 @@ class HomeFragment : Fragment() {
         language: String,
         page: Int,
     ) {
-        this.movieItems = movies
         movieUpcomingAdapter.submitData(movies, language, page)
     }
 
@@ -326,7 +272,6 @@ class HomeFragment : Fragment() {
         language: String,
         page: Int,
     ) {
-        this.movieItems = movies
         movieTopRelatedAdapter.submitData(movies, language, page)
     }
 
