@@ -88,6 +88,29 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun shareContentIntent(movies: List<Movie>) {
+        binding.layoutBanner.icShare.setOnClickListener {
+            val backdropUrl = movies.firstOrNull()?.backdropPath
+            if (!backdropUrl.isNullOrEmpty()) {
+                val baseUrlImage = "https://image.tmdb.org/t/p/original"
+                val shareIntent: Intent =
+                    Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            "Check out this movie! \n ${baseUrlImage + backdropUrl}",
+                        )
+                        type = "text/*"
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    }
+                startActivity(Intent.createChooser(shareIntent, null))
+            } else {
+                Toast.makeText(requireContext(), "No backdrop image available", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
     private fun startBannerRotation() {
         bannerTimer =
             object : Runnable {
@@ -136,6 +159,7 @@ class HomeFragment : Fragment() {
 
                         nowPlayingMovieLoaded = it
                         startBannerRotation()
+                        shareContentIntent(it)
                     }
                     setMenuTitleConstraint(false)
                 },
