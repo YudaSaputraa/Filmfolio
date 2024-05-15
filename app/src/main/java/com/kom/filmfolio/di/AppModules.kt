@@ -8,6 +8,7 @@ import com.kom.filmfolio.data.source.network.network.FilmfolioApiService
 import com.kom.filmfolio.presentation.home.HomeViewModel
 import com.kom.filmfolio.presentation.seemore.SeeMoreViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.scope.get
 import org.koin.dsl.module
 
 /**
