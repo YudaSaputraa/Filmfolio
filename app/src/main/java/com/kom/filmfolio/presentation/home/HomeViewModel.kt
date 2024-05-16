@@ -3,6 +3,7 @@ package com.kom.filmfolio.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.kom.filmfolio.data.repository.MovieRepository
+import com.kom.filmfolio.data.repository.UserPrefRepository
 import kotlinx.coroutines.Dispatchers
 
 /**
@@ -11,6 +12,7 @@ Github : https://github.com/YudaSaputraa
  **/
 class HomeViewModel(
     private val movieRepository: MovieRepository,
+    private val userPrefRepository: UserPrefRepository,
 ) : ViewModel() {
     fun getNowPlayingMovie(
         language: String,
@@ -31,4 +33,6 @@ class HomeViewModel(
         language: String,
         page: Int,
     ) = movieRepository.getUpcomingMovie(language, page).asLiveData(Dispatchers.IO)
+
+    fun setAppIntroShown(isShown: Boolean) = userPrefRepository.setAppIntroShown(isShown)
 }
