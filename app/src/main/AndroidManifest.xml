@@ -24,7 +24,6 @@
             android:exported="false" />
         <activity
             android:name=".presentation.appintro.AppIntroActivity"
-
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -114,17 +114,17 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun shareContentIntent(movies: List<Movie>) {
+    private fun shareContentIntent(movies: Movie) {
         binding.layoutBanner.icShare.setOnClickListener {
-            val backdropUrl = movies.firstOrNull()?.backdropPath
-            if (!backdropUrl.isNullOrEmpty()) {
-                val baseUrlImage = "https://image.tmdb.org/t/p/original"
+            val posterPath = movies.posterPath
+            if (posterPath.isNotEmpty()) {
+                val baseUrlImage = "https://image.tmdb.org/t/p/w500"
                 val shareIntent: Intent =
                     Intent().apply {
                         action = Intent.ACTION_SEND
                         putExtra(
                             Intent.EXTRA_TEXT,
-                            "Check out this movie! \n ${baseUrlImage + backdropUrl}",
+                            "Check out this movie!\n${movies.title}\n${baseUrlImage + posterPath}",
                         )
                         type = "text/*"
                         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -154,6 +154,7 @@ class HomeFragment : Fragment() {
         val randomMovie = nowPlayingMovieLoaded?.get(Random.nextInt(nowPlayingMovieLoaded!!.size))
         randomMovie?.let {
             updateBanner(randomMovie)
+            shareContentIntent(randomMovie)
         }
     }
 
@@ -162,7 +163,7 @@ class HomeFragment : Fragment() {
             val baseUrlImage = "https://image.tmdb.org/t/p/original"
             layoutBanner.ivMovieImg.load(baseUrlImage + movie.backdropPath) {
                 crossfade(true)
-                error(R.mipmap.ic_launcher)
+                error(R.drawable.img_error)
             }
 
             layoutBanner.tvMovieTitle.text = movie.title
@@ -185,7 +186,6 @@ class HomeFragment : Fragment() {
 
                         nowPlayingMovieLoaded = it
                         startBannerRotation()
-                        shareContentIntent(it)
                     }
                     setMenuTitleConstraint(false)
                 },

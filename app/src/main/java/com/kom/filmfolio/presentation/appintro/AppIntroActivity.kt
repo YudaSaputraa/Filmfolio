@@ -33,8 +33,8 @@ class AppIntroActivity : AppIntro2() {
         isIndicatorEnabled = true
 
         setIndicatorColor(
-            selectedIndicatorColor = getColor(R.color.md_theme_primary),
-            unselectedIndicatorColor = getColor(R.color.darkGrey),
+            selectedIndicatorColor = getColor(R.color.white),
+            unselectedIndicatorColor = getColor(R.color.grey),
         )
         if (appIntroViewModel.isAppIntroShown()) {
             navigateToHome()

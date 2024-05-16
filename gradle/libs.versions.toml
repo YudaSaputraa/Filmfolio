@@ -24,6 +24,11 @@ http-logging = "3.8.0"
 shimmer = "0.5.0"
 paging = "3.3.0"
 app-intro = "6.3.1"
+#unit test
+mockk = "1.13.10"
+coroutine-test = "1.7.2"
+turbine = "1.0.0"
+core-testing = "2.2.0"
 
 
 [libraries]
@@ -72,6 +77,16 @@ paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "pa
 
 # app intro
 app-intro = { group = "com.github.AppIntro", name = "AppIntro", version.ref = "app-intro" }
+
+# Unit Testing
+mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+mockk-agent = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutine-test" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "core-testing" }
+
+
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
