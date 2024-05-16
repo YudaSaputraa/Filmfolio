@@ -65,7 +65,7 @@ class MovieViewHolder(
             val baseUrlImage = "https://image.tmdb.org/t/p/w500"
             binding.ivSeeMoreMovie.load(baseUrlImage + movie.posterPath) {
                 crossfade(true)
-                error(R.mipmap.ic_launcher)
+                error(R.drawable.img_error)
             }
             binding.tvMovieTitle.text = movie.title
 

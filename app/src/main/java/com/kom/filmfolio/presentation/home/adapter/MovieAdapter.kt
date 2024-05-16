@@ -37,11 +37,11 @@ class MovieAdapter(
                 val baseUrlImage = "https://image.tmdb.org/t/p/w500"
                 binding.ivMovie.load(baseUrlImage + item.posterPath) {
                     crossfade(true)
-                    error(R.mipmap.ic_launcher)
+                    error(R.drawable.img_error)
                 }
                 homeBinding.layoutBanner.ivMovieImg.load(baseUrlImage + item.backdropPath) {
                     crossfade(true)
-                    error(R.mipmap.ic_launcher)
+                    error(R.drawable.img_error)
                 }
                 homeBinding.layoutBanner.tvMovieDesc.text = item.overview
                 homeBinding.layoutBanner.tvMovieTitle.text = item.title
