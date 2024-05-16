@@ -85,7 +85,31 @@ class HomeFragment : Fragment() {
 
     private fun setClickListener() {
         binding.ivMoreNowPlaying.setOnClickListener {
-            val intent = Intent(requireContext(), SeeMoreActivity::class.java)
+            val intent =
+                Intent(requireContext(), SeeMoreActivity::class.java).apply {
+                    putExtra("EXTRA_MOVIE_TYPE", "now_playing")
+                }
+            startActivity(intent)
+        }
+        binding.ivMorePopular.setOnClickListener {
+            val intent =
+                Intent(requireContext(), SeeMoreActivity::class.java).apply {
+                    putExtra("EXTRA_MOVIE_TYPE", "popular")
+                }
+            startActivity(intent)
+        }
+        binding.ivMoreUpcoming.setOnClickListener {
+            val intent =
+                Intent(requireContext(), SeeMoreActivity::class.java).apply {
+                    putExtra("EXTRA_MOVIE_TYPE", "upcoming")
+                }
+            startActivity(intent)
+        }
+        binding.ivMoreTopRelated.setOnClickListener {
+            val intent =
+                Intent(requireContext(), SeeMoreActivity::class.java).apply {
+                    putExtra("EXTRA_MOVIE_TYPE", "top_related")
+                }
             startActivity(intent)
         }
     }

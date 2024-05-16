@@ -16,9 +16,10 @@
 
     <TextView
         android:id="@+id/tv_movie_title"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         tools:text="@string/text_title_movie"
+        android:textAlignment="center"
         android:maxLines="1"
         android:ellipsize="end"
         app:layout_constraintStart_toStartOf="@id/iv_see_more_movie"
