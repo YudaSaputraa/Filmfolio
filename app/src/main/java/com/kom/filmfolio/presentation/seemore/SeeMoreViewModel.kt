@@ -8,18 +8,45 @@ import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.kom.filmfolio.data.repository.MovieRepository
 import com.kom.filmfolio.data.source.network.network.FilmfolioApiService
-import com.kom.filmfolio.paging.NowPlayingMoviePaging
+import com.kom.filmfolio.paging.NowPlayingMoviePagingSource
+import com.kom.filmfolio.paging.PopularMoviePagingSource
+import com.kom.filmfolio.paging.TopRelatedMoviePagingSource
+import com.kom.filmfolio.paging.UpcomingMoviePagingSource
 import kotlinx.coroutines.Dispatchers
 
 class SeeMoreViewModel(
     private val movieRepository: MovieRepository,
     private val filmfolioApiService: FilmfolioApiService,
 ) : ViewModel() {
-    val flow =
+    val flowNowPlayingMovie =
         Pager(
             PagingConfig(pageSize = 20),
         ) {
-            NowPlayingMoviePaging(filmfolioApiService)
+            NowPlayingMoviePagingSource(filmfolioApiService)
+        }.flow
+            .cachedIn(viewModelScope)
+
+    val flowPopularMovie =
+        Pager(
+            PagingConfig(pageSize = 20),
+        ) {
+            PopularMoviePagingSource(filmfolioApiService)
+        }.flow
+            .cachedIn(viewModelScope)
+
+    val flowTopRelatedMovie =
+        Pager(
+            PagingConfig(pageSize = 20),
+        ) {
+            TopRelatedMoviePagingSource(filmfolioApiService)
+        }.flow
+            .cachedIn(viewModelScope)
+
+    val flowUpcomingMovie =
+        Pager(
+            PagingConfig(pageSize = 20),
+        ) {
+            UpcomingMoviePagingSource(filmfolioApiService)
         }.flow
             .cachedIn(viewModelScope)
 

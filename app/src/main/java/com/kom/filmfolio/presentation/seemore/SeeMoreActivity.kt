@@ -5,9 +5,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.kom.filmfolio.R
 import com.kom.filmfolio.databinding.ActivitySeeMoreBinding
 import com.kom.filmfolio.presentation.seemore.adapter.MoviePagingAdapter
-import com.kom.filmfolio.presentation.seemore.adapter.SeeMoreAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,27 +23,73 @@ class SeeMoreActivity : AppCompatActivity() {
             Toast.makeText(this, it.id.toString(), Toast.LENGTH_SHORT).show()
         }
 
-    private val movieNowPlayingAdapter: SeeMoreAdapter by lazy {
-        SeeMoreAdapter {
-            it.let { item ->
-                Toast.makeText(this, item.id.toString(), Toast.LENGTH_SHORT).show()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
+        val movieType = intent.getStringExtra("EXTRA_MOVIE_TYPE")
+
+        getSeeMoreMovie(movieType)
+        bindMovieList()
+        setClickListener()
+    }
+
+    private fun setClickListener() {
+        binding.ivBack.setOnClickListener {
+            onBackPressed()
+        }
+    }
+
+    private fun getSeeMoreMovie(movieType: String?) {
+        if (movieType == "now_playing") {
+            getNowPlayingMovieWithPaging()
+        } else if (movieType == "popular") {
+            getPopularMovieWithPaging()
+        } else if (movieType == "top_related") {
+            getTopRelatedMovieWithPaging()
+        } else if (movieType == "upcoming") {
+            getUpcomingMovieWithPaging()
+        }
+    }
+
+    private fun getNowPlayingMovieWithPaging() {
+        binding.tvTitleSeeMore.text = getString(R.string.text_now_playing)
+        val recyclerView = binding.rvSeeMoreMovies
+        recyclerView.adapter = pagingAdapter
+        lifecycleScope.launch {
+            seeMoreViewModel.flowNowPlayingMovie.collectLatest { pagingData ->
+                pagingAdapter.submitData(pagingData)
             }
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-
-        getMovieWithPaging()
-        bindMovieList()
-    }
-
-    private fun getMovieWithPaging() {
+    private fun getPopularMovieWithPaging() {
+        binding.tvTitleSeeMore.text = getString(R.string.text_popular)
         val recyclerView = binding.rvSeeMoreMovies
         recyclerView.adapter = pagingAdapter
         lifecycleScope.launch {
-            seeMoreViewModel.flow.collectLatest { pagingData ->
+            seeMoreViewModel.flowPopularMovie.collectLatest { pagingData ->
+                pagingAdapter.submitData(pagingData)
+            }
+        }
+    }
+
+    private fun getTopRelatedMovieWithPaging() {
+        binding.tvTitleSeeMore.text = getString(R.string.text_top_related)
+        val recyclerView = binding.rvSeeMoreMovies
+        recyclerView.adapter = pagingAdapter
+        lifecycleScope.launch {
+            seeMoreViewModel.flowTopRelatedMovie.collectLatest { pagingData ->
+                pagingAdapter.submitData(pagingData)
+            }
+        }
+    }
+
+    private fun getUpcomingMovieWithPaging() {
+        binding.tvTitleSeeMore.text = getString(R.string.text_upcoming)
+        val recyclerView = binding.rvSeeMoreMovies
+        recyclerView.adapter = pagingAdapter
+        lifecycleScope.launch {
+            seeMoreViewModel.flowUpcomingMovie.collectLatest { pagingData ->
                 pagingAdapter.submitData(pagingData)
             }
         }

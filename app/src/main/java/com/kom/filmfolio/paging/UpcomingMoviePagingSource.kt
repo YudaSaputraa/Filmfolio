@@ -6,9 +6,8 @@ import androidx.paging.PagingState
 import com.kom.filmfolio.data.mapper.toMovies
 import com.kom.filmfolio.data.model.Movie
 import com.kom.filmfolio.data.source.network.network.FilmfolioApiService
-import retrofit2.HttpException
 
-class NowPlayingMoviePaging(
+class UpcomingMoviePagingSource(
     private val filmFolioApiService: FilmfolioApiService,
 ) : PagingSource<Int, Movie>() {
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
@@ -21,7 +20,7 @@ class NowPlayingMoviePaging(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         try {
             val nextPageNumber = params.key ?: 1
-            val response = filmFolioApiService.getNowPlayingMovie("en-US", nextPageNumber)
+            val response = filmFolioApiService.getUpcomingMovie("en-US", nextPageNumber)
             return LoadResult.Page(
                 data = response.results.toMovies(),
                 prevKey = null,
@@ -30,7 +29,7 @@ class NowPlayingMoviePaging(
         } catch (e: Exception) {
             Log.d("Paging", "load: ${e.message}")
             return LoadResult.Error(e)
-        } catch (e: HttpException) {
+        } catch (e: Exception) {
             return LoadResult.Error(e)
         }
     }
