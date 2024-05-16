@@ -23,6 +23,7 @@ okhttp = "4.11.0"
 http-logging = "3.8.0"
 shimmer = "0.5.0"
 paging = "3.3.0"
+app-intro = "6.3.1"
 
 
 [libraries]
@@ -68,6 +69,9 @@ shimmer-android = { group = "com.facebook.shimmer", name = "shimmer", version.re
 
 # paging
 paging = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
+
+# app intro
+app-intro = { group = "com.github.AppIntro", name = "AppIntro", version.ref = "app-intro" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

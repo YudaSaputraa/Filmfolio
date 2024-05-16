@@ -76,6 +76,8 @@ class HomeFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        homeViewModel.setAppIntroShown(true)
+
         bindMovieList()
         getMovieData("en-US", 1)
         setClickListener()

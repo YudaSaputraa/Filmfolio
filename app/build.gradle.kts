@@ -116,4 +116,6 @@ dependencies {
 
     implementation(libs.shimmer.android)
     implementation(libs.paging)
+
+    implementation(libs.app.intro)
 }

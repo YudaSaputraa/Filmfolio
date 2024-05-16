@@ -9,4 +9,8 @@
     <string name="text_top_related">Top Related</string>
     <string name="text_title_now_playing">Now Playing</string>
     <string name="text_title_movie">Godzila</string>
+    <string name="text_welcome">Welcome!</string>
+    <string name="text_desc_welcome">Explore movies like never before with FilmFolio. Get personalized recommendations, latest releases.</string>
+    <string name="text_lets_get_started">Let\'s get started!</string>
+    <string name="text_decs_get_started">Begin your cinema journey with ease! Discover, explore, and immerse yourself in the world of movies effortlessly. Let\'s start exploring!</string>
 </resources>
