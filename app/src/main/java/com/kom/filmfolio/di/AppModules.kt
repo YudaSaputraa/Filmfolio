@@ -73,7 +73,7 @@ object AppModules {
             viewModelOf(::HomeViewModel)
             viewModelOf(::SeeMoreViewModel)
             viewModel { (extras: Bundle?) ->
-                DetailViewModel(extras, get())
+                DetailViewModel(extras, get(), get())
             }
             viewModelOf(::AppIntroViewModel)
             viewModelOf(::MyListViewModel)

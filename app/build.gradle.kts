@@ -7,8 +7,6 @@ plugins {
 }
 
 android {
-    packaging {
-    }
     namespace = "com.kom.filmfolio"
     compileSdk = 34
 
@@ -97,6 +95,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.room.ktx)
+    ksp(libs.room.compiler)
     testImplementation(libs.junit)
     testImplementation("junit:junit:4.12")
     androidTestImplementation(libs.androidx.junit)
@@ -128,6 +127,5 @@ dependencies {
     androidTestImplementation(libs.mockk.android)
     testImplementation(libs.coroutine.test)
     testImplementation(libs.turbine)
-    implementation("com.android.support:multidex:1.0.3")
     testImplementation(libs.core.testing)
 }

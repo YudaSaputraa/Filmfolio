@@ -60,8 +60,7 @@ class MyListMovieRepositoryImpl(
         return favouriteDataSource.getAllFavourites()
             .map {
                 proceed {
-                    val result = it.toFavouriteList()
-                    result
+                    it.toFavouriteList()
                 }
             }.map {
                 if (it.payload?.isEmpty() == false) return@map it

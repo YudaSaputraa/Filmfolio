@@ -1,12 +1,13 @@
 package com.kom.filmfolio.presentation.common.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.kom.filmfolio.core.ViewHolderBinder
+import com.kom.filmfolio.R
 import com.kom.filmfolio.data.model.Favourite
 import com.kom.filmfolio.databinding.ItemMyListMovieBinding
 
@@ -15,29 +16,19 @@ Written by Komang Yuda Saputra
 Github : https://github.com/YudaSaputraa
  **/
 class MovieListAdapter(private val itemClick: (Favourite) -> Unit) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>() {
     class MovieViewHolder(
         private val binding: ItemMyListMovieBinding,
-        itemClick: (Favourite) -> Unit,
-    ) : RecyclerView.ViewHolder(binding.root), ViewHolderBinder<Favourite> {
-        override fun bind(item: Favourite) {
-            setMovieData(item)
-
-            setClickListener(item)
-        }
-
-        private fun setClickListener(item: Favourite) {
-            with(binding) {
+        val itemClick: (Favourite) -> Unit,
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bindView(item: Favourite) {
+            Log.d("MovieViewHolder", "Binding item: $item")
+            val baseUrlImage = "https://image.tmdb.org/t/p/w500"
+            binding.ivMyListMovie.load(baseUrlImage + item.movieImage) {
+                crossfade(true)
+                error(R.drawable.img_error)
             }
-        }
-
-        private fun setMovieData(item: Favourite) {
-            with(binding) {
-                val baseUrlImage = "https://image.tmdb.org/t/p/w500"
-                binding.ivMyListMovie.load(baseUrlImage + item.movieImage) {
-                    crossfade(true)
-                }
-            }
+            itemView.setOnClickListener { itemClick(item) }
         }
     }
 
@@ -74,12 +65,12 @@ class MovieListAdapter(private val itemClick: (Favourite) -> Unit) :
         return MovieViewHolder(binding, itemClick)
     }
 
-    override fun getItemCount(): Int = dataDiffer.currentList.size
-
     override fun onBindViewHolder(
-        holder: RecyclerView.ViewHolder,
+        holder: MovieViewHolder,
         position: Int,
     ) {
-        (holder as ViewHolderBinder<Favourite>).bind(dataDiffer.currentList[position])
+        (holder.bindView(dataDiffer.currentList[position]))
     }
+
+    override fun getItemCount(): Int = dataDiffer.currentList.size
 }
