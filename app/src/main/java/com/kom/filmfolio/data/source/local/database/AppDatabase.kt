@@ -9,13 +9,13 @@ import com.kom.filmfolio.data.source.local.database.entity.FavouriteEntity
 
 @Database(
     entities = [FavouriteEntity::class],
-    version = 1,
+    version = 3,
     exportSchema = false,
 )
-abstract class AppDatabase: RoomDatabase(){
-    abstract fun appDao() : FavDao
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun appDao(): FavDao
 
-    companion object{
+    companion object {
         private const val DB_NAME = "filmfolio.db"
 
         fun createInstance(context: Context): AppDatabase {

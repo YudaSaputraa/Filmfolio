@@ -7,14 +7,14 @@ fun Favourite?.toFavouriteEntity() =
     FavouriteEntity(
         id = this?.id,
         movieId = this?.movieId ?: 0,
-        movieImage = this?.movieImage.orEmpty()
+        movieImage = this?.movieImage.orEmpty(),
     )
 
 fun FavouriteEntity?.toFavourite() =
     Favourite(
         id = this?.id,
         movieId = this?.movieId ?: 0,
-        movieImage = this?.movieImage.orEmpty()
+        movieImage = this?.movieImage.orEmpty(),
     )
 
 fun List<FavouriteEntity?>.toFavouriteList() = this.map { it.toFavourite() }

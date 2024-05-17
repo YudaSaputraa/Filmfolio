@@ -32,7 +32,7 @@ class DetailFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
@@ -51,7 +51,31 @@ class DetailFragment : BottomSheetDialogFragment() {
         binding.layoutDescription.btnShare.setOnClickListener {
             share(currentMovie)
         }
+        binding.layoutDescription.btnAddToList.setOnClickListener {
+//            addToList()
+        }
     }
+
+//    private fun addToList() {
+//        viewModel.addItemToList().observe(viewLifecycleOwner) { result ->
+//            result.proceedWhen(
+//                doOnSuccess = {
+//                    Toast.makeText(
+//                        requireContext(),
+//                        getString(R.string.text_success_add_to_list),
+//                        Toast.LENGTH_SHORT,
+//                    ).show()
+//                },
+//                doOnError = {
+//                    Toast.makeText(
+//                        requireContext(),
+//                        getString(R.string.text_error_add_to_list),
+//                        Toast.LENGTH_SHORT,
+//                    ).show()
+//                },
+//            )
+//        }
+//    }
 
     private fun share(movie: MovieDetail) {
         val backdropUrl = movie.backdropPath
