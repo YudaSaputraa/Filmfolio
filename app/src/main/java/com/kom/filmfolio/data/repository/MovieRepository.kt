@@ -50,7 +50,7 @@ class MovieRepositoryImpl(
     ): Flow<ResultWrapper<List<Movie>>> {
         return flow {
             emit(ResultWrapper.Loading())
-            delay(1000)
+            delay(500)
             val result = dataSource.getNowPlayingMovie(language, page).results.toMovies()
             emit(ResultWrapper.Success(result))
         }
@@ -62,7 +62,7 @@ class MovieRepositoryImpl(
     ): Flow<ResultWrapper<List<Movie>>> {
         return flow {
             emit(ResultWrapper.Loading())
-            delay(1000)
+            delay(500)
             val result = dataSource.getPopularMovie(language, page).results.toMovies()
             emit(ResultWrapper.Success(result))
         }
@@ -74,7 +74,7 @@ class MovieRepositoryImpl(
     ): Flow<ResultWrapper<List<Movie>>> {
         return flow {
             emit(ResultWrapper.Loading())
-            delay(1000)
+            delay(500)
             val result = dataSource.getTopRelatedMovie(language, page).results.toMovies()
             emit(ResultWrapper.Success(result))
         }
@@ -86,7 +86,7 @@ class MovieRepositoryImpl(
     ): Flow<ResultWrapper<List<Movie>>> {
         return flow {
             emit(ResultWrapper.Loading())
-            delay(1000)
+            delay(500)
             val result = dataSource.getUpcomingMovie(language, page).results.toMovies()
             emit(ResultWrapper.Success(result))
         }

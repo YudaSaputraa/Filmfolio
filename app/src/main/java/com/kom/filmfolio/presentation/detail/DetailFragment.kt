@@ -105,8 +105,7 @@ class DetailFragment : BottomSheetDialogFragment() {
                     doOnSuccess = {
                         binding.layoutState.root.isVisible = false
                         binding.layoutState.pbLoading.isVisible = false
-                        it.payload?.let {
-                                movieDetail ->
+                        it.payload?.let { movieDetail ->
                             currentMovie = movieDetail
                             setupBind(movieDetail)
                         }
@@ -130,7 +129,8 @@ class DetailFragment : BottomSheetDialogFragment() {
                 crossfade(true)
             }
             binding.layoutBanner.tvMovieTitle.text = it.title
-            binding.layoutBanner.tvDetailMovieInformation.text = context?.getString(R.string.text_dates, it.releaseDate, it.voteAverage.toString())
+            binding.layoutBanner.tvDetailMovieInformation.text =
+                context?.getString(R.string.text_dates, it.releaseDate, it.voteAverage.toString())
             binding.layoutDescription.tvDetailDescription.text = it.overview
         }
     }

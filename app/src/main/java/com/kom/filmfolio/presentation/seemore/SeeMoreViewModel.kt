@@ -9,7 +9,7 @@ import com.kom.filmfolio.data.repository.MovieRepository
 import com.kom.filmfolio.data.source.network.network.FilmfolioApiService
 import com.kom.filmfolio.paging.NowPlayingMoviePagingSource
 import com.kom.filmfolio.paging.PopularMoviePagingSource
-import com.kom.filmfolio.paging.TopRelatedMoviePagingSource
+import com.kom.filmfolio.paging.TopRatedMoviePagingSource
 import com.kom.filmfolio.paging.UpcomingMoviePagingSource
 
 class SeeMoreViewModel(
@@ -32,11 +32,11 @@ class SeeMoreViewModel(
         }.flow
             .cachedIn(viewModelScope)
 
-    val flowTopRelatedMovie =
+    val flowTopRatedMovie =
         Pager(
             PagingConfig(pageSize = 20),
         ) {
-            TopRelatedMoviePagingSource(filmfolioApiService)
+            TopRatedMoviePagingSource(filmfolioApiService)
         }.flow
             .cachedIn(viewModelScope)
 

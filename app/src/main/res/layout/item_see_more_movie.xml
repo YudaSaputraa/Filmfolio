@@ -8,11 +8,14 @@
 
     <ImageView
         android:id="@+id/iv_see_more_movie"
-        android:layout_width="130dp"
-        android:layout_height="180dp"
-        tools:src="@tools:sample/avatars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tv_movie_title"

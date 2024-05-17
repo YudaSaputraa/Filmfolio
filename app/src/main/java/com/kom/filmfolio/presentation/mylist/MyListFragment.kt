@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.kom.filmfolio.R
 import com.kom.filmfolio.databinding.FragmentMyListBinding
 import com.kom.filmfolio.presentation.common.adapter.MovieListAdapter
 import com.kom.filmfolio.presentation.detail.DetailFragment
@@ -57,11 +58,35 @@ class MyListFragment : Fragment() {
         myListViewModel.getAllFavorite().observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
                 doOnSuccess = {
+                    binding.layoutState.root.isVisible = false
+                    binding.layoutState.tvError.isVisible = false
+                    binding.layoutState.pbLoading.isVisible = false
                     binding.rvSeeMoreMovies.isVisible = true
                     Log.d("MyListFragment", "Received data: ${result.payload}")
                     result.payload?.let {
                         adapter.submitData(it)
                     }
+                },
+                doOnLoading = {
+                    binding.layoutState.root.isVisible = true
+                    binding.layoutState.tvError.isVisible = true
+                    binding.layoutState.pbLoading.isVisible = true
+                    binding.rvSeeMoreMovies.isVisible = false
+                },
+                doOnError = {
+                    binding.layoutState.root.isVisible = true
+                    binding.layoutState.tvError.isVisible = true
+                    binding.layoutState.pbLoading.isVisible = false
+                    binding.layoutState.tvError.text = getString(R.string.text_error)
+                    Log.d("GetAllFavorite", "observeData: ${it.exception?.message}")
+                    binding.rvSeeMoreMovies.isVisible = false
+                },
+                doOnEmpty = {
+                    binding.layoutState.root.isVisible = true
+                    binding.layoutState.tvError.isVisible = true
+                    binding.layoutState.pbLoading.isVisible = false
+                    binding.layoutState.tvError.text = getString(R.string.text_favorite_empty)
+                    binding.rvSeeMoreMovies.isVisible = false
                 },
             )
         }

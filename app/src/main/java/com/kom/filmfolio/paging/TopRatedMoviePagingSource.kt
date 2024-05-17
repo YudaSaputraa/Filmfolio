@@ -8,7 +8,7 @@ import com.kom.filmfolio.data.model.Movie
 import com.kom.filmfolio.data.source.network.network.FilmfolioApiService
 import retrofit2.HttpException
 
-class TopRelatedMoviePagingSource(
+class TopRatedMoviePagingSource(
     private val filmFolioApiService: FilmfolioApiService,
 ) : PagingSource<Int, Movie>() {
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
@@ -21,7 +21,7 @@ class TopRelatedMoviePagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         try {
             val nextPageNumber = params.key ?: 1
-            val response = filmFolioApiService.getTopRelatedMovie("en-US", nextPageNumber)
+            val response = filmFolioApiService.getTopRatedMovie("en-US", nextPageNumber)
             return LoadResult.Page(
                 data = response.results.toMovies(),
                 prevKey = null,

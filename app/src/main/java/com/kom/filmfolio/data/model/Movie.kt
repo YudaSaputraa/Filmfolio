@@ -6,7 +6,6 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Movie(
     var backdropPath: String,
-//    var genreIds: List<Int?>?,
     var id: Int?,
     var originalLanguage: String,
     var originalTitle: String,
@@ -16,5 +15,4 @@ data class Movie(
     var releaseDate: String,
     var title: String,
     var voteAverage: Double,
-//    var voteCount: Int?,
 ) : Parcelable

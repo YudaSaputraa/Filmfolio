@@ -32,7 +32,7 @@ interface FilmfolioApiService {
     ): MovieResponse
 
     @GET("3/movie/top_rated")
-    suspend fun getTopRelatedMovie(
+    suspend fun getTopRatedMovie(
         @Query("language") language: String,
         @Query("page") page: Int,
     ): MovieResponse

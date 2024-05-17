@@ -53,9 +53,9 @@ class MovieApiDataSourceTest {
     fun getTopRelatedMovie() {
         runTest {
             val mockResponse = mockk<MovieResponse>(relaxed = true)
-            coEvery { service.getTopRelatedMovie(any(), any()) } returns mockResponse
+            coEvery { service.getTopRatedMovie(any(), any()) } returns mockResponse
             val actualResult = dataSource.getTopRelatedMovie("en-US", 1)
-            coVerify { service.getTopRelatedMovie(any(), any()) }
+            coVerify { service.getTopRatedMovie(any(), any()) }
             assertEquals(mockResponse, actualResult)
         }
     }
