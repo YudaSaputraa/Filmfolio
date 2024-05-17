@@ -55,13 +55,4 @@
         tools:listitem="@layout/item_see_more_movie"
         />
 
-    <include
-        android:id="@+id/layout_content_state_movie"
-        layout="@layout/layout_content_state"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
