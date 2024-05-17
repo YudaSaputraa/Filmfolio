@@ -7,10 +7,13 @@ plugins {
 }
 
 android {
+    packaging {
+    }
     namespace = "com.kom.filmfolio"
     compileSdk = 34
 
     defaultConfig {
+        multiDexEnabled = true
         applicationId = "com.kom.filmfolio"
         minSdk = 24
         targetSdk = 34
@@ -93,8 +96,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.legacy.support.v4)
-    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.room.ktx)
     testImplementation(libs.junit)
     testImplementation("junit:junit:4.12")
     androidTestImplementation(libs.androidx.junit)
@@ -126,5 +128,6 @@ dependencies {
     androidTestImplementation(libs.mockk.android)
     testImplementation(libs.coroutine.test)
     testImplementation(libs.turbine)
+    implementation("com.android.support:multidex:1.0.3")
     testImplementation(libs.core.testing)
 }
