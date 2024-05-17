@@ -3,7 +3,6 @@ package com.kom.filmfolio.data.repository
 import com.kom.filmfolio.data.datasource.favourite.FavouriteDataSource
 import com.kom.filmfolio.data.mapper.toFavouriteEntity
 import com.kom.filmfolio.data.mapper.toFavouriteList
-import com.kom.filmfolio.data.model.Favourite
 import com.kom.filmfolio.data.model.Movie
 import com.kom.filmfolio.data.source.local.database.entity.FavouriteEntity
 import com.kom.filmfolio.utils.ResultWrapper
@@ -23,9 +22,9 @@ Github : https://github.com/YudaSaputraa
 interface MyListMovieRepository {
     fun createFavorite(movie: Movie): Flow<ResultWrapper<Boolean>>
 
-    fun deleteMovie(item: Favourite): Flow<ResultWrapper<Boolean>>
+    fun deleteMovie(item: Movie): Flow<ResultWrapper<Boolean>>
 
-    fun getAllMyListMovie(): Flow<ResultWrapper<List<Favourite>>>
+    fun getAllMyListMovie(): Flow<ResultWrapper<List<Movie>>>
 
     fun deleteAllMyList(): Flow<ResultWrapper<Unit>>
 }
@@ -40,7 +39,15 @@ class MyListMovieRepositoryImpl(
                     favouriteDataSource.insertFavourite(
                         FavouriteEntity(
                             movieId = movieId,
-                            movieImage = movie.posterPath,
+                            posterPath = movie.posterPath,
+                            backdropPath = movie.backdropPath,
+                            originalTitle = movie.originalTitle,
+                            originalLanguage = movie.originalLanguage,
+                            overview = movie.overview,
+                            popularity = movie.popularity,
+                            releaseDate = movie.releaseDate,
+                            title = movie.title,
+                            voteAverage = movie.voteAverage,
                         ),
                     )
 
@@ -52,11 +59,11 @@ class MyListMovieRepositoryImpl(
         }
     }
 
-    override fun deleteMovie(item: Favourite): Flow<ResultWrapper<Boolean>> {
+    override fun deleteMovie(item: Movie): Flow<ResultWrapper<Boolean>> {
         return proceedFlow { favouriteDataSource.deleteFavourite(item.toFavouriteEntity()) > 0 }
     }
 
-    override fun getAllMyListMovie(): Flow<ResultWrapper<List<Favourite>>> {
+    override fun getAllMyListMovie(): Flow<ResultWrapper<List<Movie>>> {
         return favouriteDataSource.getAllFavourites()
             .map {
                 proceed {

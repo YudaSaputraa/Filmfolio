@@ -29,7 +29,7 @@ class MovieApiDataSource(
         language: String,
         page: Int,
     ): MovieResponse {
-        return service.getTopRelatedMovie(language, page)
+        return service.getTopRatedMovie(language, page)
     }
 
     override suspend fun getUpcomingMovie(

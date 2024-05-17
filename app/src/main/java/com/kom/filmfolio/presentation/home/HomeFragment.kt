@@ -38,7 +38,6 @@ class HomeFragment : Fragment() {
         MovieAdapter {
 
             it.let { item ->
-                Toast.makeText(requireContext(), item.id.toString(), Toast.LENGTH_SHORT).show()
                 val bottomSheetFragment =
                     DetailFragment().apply {
                         arguments =
@@ -140,7 +139,7 @@ class HomeFragment : Fragment() {
         binding.ivMoreTopRelated.setOnClickListener {
             val intent =
                 Intent(requireContext(), SeeMoreActivity::class.java).apply {
-                    putExtra("EXTRA_MOVIE_TYPE", "top_related")
+                    putExtra("EXTRA_MOVIE_TYPE", "top_rated")
                 }
             startActivity(intent)
         }

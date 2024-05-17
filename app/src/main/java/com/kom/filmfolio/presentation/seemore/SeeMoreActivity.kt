@@ -51,8 +51,8 @@ class SeeMoreActivity : AppCompatActivity() {
             getNowPlayingMovieWithPaging()
         } else if (movieType == "popular") {
             getPopularMovieWithPaging()
-        } else if (movieType == "top_related") {
-            getTopRelatedMovieWithPaging()
+        } else if (movieType == "top_rated") {
+            getTopRatedMovieWithPaging()
         } else if (movieType == "upcoming") {
             getUpcomingMovieWithPaging()
         }
@@ -80,12 +80,12 @@ class SeeMoreActivity : AppCompatActivity() {
         }
     }
 
-    private fun getTopRelatedMovieWithPaging() {
+    private fun getTopRatedMovieWithPaging() {
         binding.tvTitleSeeMore.text = getString(R.string.text_top_related)
         val recyclerView = binding.rvSeeMoreMovies
         recyclerView.adapter = pagingAdapter
         lifecycleScope.launch {
-            seeMoreViewModel.flowTopRelatedMovie.collectLatest { pagingData ->
+            seeMoreViewModel.flowTopRatedMovie.collectLatest { pagingData ->
                 pagingAdapter.submitData(pagingData)
             }
         }

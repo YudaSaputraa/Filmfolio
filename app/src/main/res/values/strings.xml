@@ -6,7 +6,7 @@
     <string name="text_now_playing">Now Playing</string>
     <string name="text_popular">Popular</string>
     <string name="text_upcoming">Upcoming Movies</string>
-    <string name="text_top_related">Top Related</string>
+    <string name="text_top_related">Top Rated</string>
     <string name="text_title_movie">Godzila</string>
     <string name="text_dates">%1$s • %2$s☆</string>
     <string name="text_movie_title">Kingdom Of The Planet of The Apes</string>
@@ -16,4 +16,7 @@
     <string name="text_decs_get_started">Begin your cinema journey with ease! Discover, explore, and immerse yourself in the world of movies effortlessly. Let\'s start exploring!</string>
     <string name="text_success_add_to_list">Success add to list!</string>
     <string name="text_error_add_to_list">Error add to list!</string>
+    <string name="text_my_list_title">My List</string>
+    <string name="text_error">Error!</string>
+    <string name="text_favorite_empty">Favorite is Empty!</string>
 </resources>

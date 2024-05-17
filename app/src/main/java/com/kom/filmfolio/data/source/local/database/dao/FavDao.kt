@@ -24,4 +24,7 @@ interface FavDao {
 
     @Query("DELETE FROM FAVOURITES")
     fun deleteAll()
+
+    @Query("SELECT * FROM favourites WHERE movie_id = :movieId LIMIT 1")
+    suspend fun isFavouriteExist(movieId: Int): FavouriteEntity?
 }
