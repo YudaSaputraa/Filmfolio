@@ -1,8 +1,10 @@
 package com.kom.filmfolio.data.repository
 
 import com.kom.filmfolio.data.datasource.movie.MovieDataSource
+import com.kom.filmfolio.data.mapper.toMovieDetail
 import com.kom.filmfolio.data.mapper.toMovies
 import com.kom.filmfolio.data.model.Movie
+import com.kom.filmfolio.data.model.MovieDetail
 import com.kom.filmfolio.utils.ResultWrapper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -32,6 +34,11 @@ interface MovieRepository {
         language: String,
         page: Int,
     ): Flow<ResultWrapper<List<Movie>>>
+
+    fun getDetailMovieById(
+        id: Int,
+        language: String? = "en-US",
+    ): Flow<ResultWrapper<MovieDetail>>
 }
 
 class MovieRepositoryImpl(
@@ -81,6 +88,17 @@ class MovieRepositoryImpl(
             emit(ResultWrapper.Loading())
             delay(1000)
             val result = dataSource.getUpcomingMovie(language, page).results.toMovies()
+            emit(ResultWrapper.Success(result))
+        }
+    }
+
+    override fun getDetailMovieById(
+        id: Int,
+        language: String?,
+    ): Flow<ResultWrapper<MovieDetail>> {
+        return flow {
+            emit(ResultWrapper.Loading())
+            val result = dataSource.getDetailMovieById(id = id, language = language).toMovieDetail()
             emit(ResultWrapper.Success(result))
         }
     }

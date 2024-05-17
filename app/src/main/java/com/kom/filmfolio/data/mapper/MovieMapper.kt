@@ -1,6 +1,8 @@
 package com.kom.filmfolio.data.mapper
 
 import com.kom.filmfolio.data.model.Movie
+import com.kom.filmfolio.data.model.MovieDetail
+import com.kom.filmfolio.data.source.network.model.detail.DetailMovieResponse
 import com.kom.filmfolio.data.source.network.model.movie.Result
 
 /**
@@ -21,4 +23,19 @@ fun Result?.toMovie() =
         voteAverage = this?.voteAverage ?: 0.0,
     )
 
+fun DetailMovieResponse?.toMovieDetail() =
+    MovieDetail(
+        id = this?.id ?: 0,
+        originalTitle = this?.originalTitle.orEmpty(),
+        title = this?.title.orEmpty(),
+        backdropPath = this?.backdropPath.orEmpty(),
+        posterPath = this?.posterPath.orEmpty(),
+        overview = this?.overview.orEmpty(),
+        releaseDate = this?.releaseDate.orEmpty(),
+        imdbId = this?.imdbId.orEmpty(),
+        voteAverage = this?.voteAverage ?: 0.0,
+    )
+
 fun Collection<Result>?.toMovies() = this?.map { it.toMovie() } ?: listOf()
+
+fun Collection<DetailMovieResponse>.toDetailMovies() = this?.map { it.toMovieDetail() } ?: listOf()

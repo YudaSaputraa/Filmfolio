@@ -8,6 +8,8 @@
     <string name="text_upcoming">Upcoming Movies</string>
     <string name="text_top_related">Top Related</string>
     <string name="text_title_movie">Godzila</string>
+    <string name="text_dates">%1$s • %2$s☆</string>
+    <string name="text_movie_title">Kingdom Of The Planet of The Apes</string>
     <string name="text_welcome">Welcome!</string>
     <string name="text_desc_welcome">Explore movies like never before with FilmFolio. Get personalized recommendations, latest releases.</string>
     <string name="text_lets_get_started">Let\'s get started!</string>

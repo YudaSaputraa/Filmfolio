@@ -1,6 +1,7 @@
 package com.kom.filmfolio.di
 
 import android.content.SharedPreferences
+import android.os.Bundle
 import com.kom.filmfolio.data.datasource.movie.MovieApiDataSource
 import com.kom.filmfolio.data.datasource.movie.MovieDataSource
 import com.kom.filmfolio.data.datasource.user.UserPrefDataSource
@@ -13,11 +14,14 @@ import com.kom.filmfolio.data.source.local.pref.UserPreference
 import com.kom.filmfolio.data.source.local.pref.UserPreferenceImpl
 import com.kom.filmfolio.data.source.network.network.FilmfolioApiService
 import com.kom.filmfolio.presentation.appintro.AppIntroViewModel
+import com.kom.filmfolio.presentation.detail.DetailViewModel
 import com.kom.filmfolio.presentation.home.HomeViewModel
 import com.kom.filmfolio.presentation.seemore.SeeMoreViewModel
 import com.kom.filmfolio.utils.SharedPreferenceUtils
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.scope.get
 import org.koin.dsl.module
 
 /**
@@ -57,6 +61,9 @@ object AppModules {
         module {
             viewModelOf(::HomeViewModel)
             viewModelOf(::SeeMoreViewModel)
+            viewModel { (extras: Bundle?) ->
+                DetailViewModel(extras, get())
+            }
             viewModelOf(::AppIntroViewModel)
         }
 

@@ -1,5 +1,6 @@
 package com.kom.filmfolio.data.datasource.movie
 
+import com.kom.filmfolio.data.source.network.model.detail.DetailMovieResponse
 import com.kom.filmfolio.data.source.network.model.movie.MovieResponse
 
 /**
@@ -26,4 +27,9 @@ interface MovieDataSource {
         language: String,
         page: Int,
     ): MovieResponse
+
+    suspend fun getDetailMovieById(
+        id: Int,
+        language: String?,
+    ): DetailMovieResponse
 }

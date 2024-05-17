@@ -17,6 +17,7 @@ import coil.load
 import com.kom.filmfolio.R
 import com.kom.filmfolio.data.model.Movie
 import com.kom.filmfolio.databinding.FragmentHomeBinding
+import com.kom.filmfolio.presentation.detail.DetailFragment
 import com.kom.filmfolio.presentation.home.adapter.MovieAdapter
 import com.kom.filmfolio.presentation.seemore.SeeMoreActivity
 import com.kom.filmfolio.utils.proceedWhen
@@ -28,6 +29,7 @@ class HomeFragment : Fragment() {
     private val homeViewModel: HomeViewModel by viewModel()
     private var nowPlayingMovieLoaded: List<Movie>? = null
     private var isFirstBanner: Boolean = true
+    private var currentMovie: Movie? = null
 
     private var bannerTimer: Runnable? = null
     private val handler = Handler(Looper.getMainLooper())
@@ -35,28 +37,56 @@ class HomeFragment : Fragment() {
     private val movieNowPlayingAdapter: MovieAdapter by lazy {
         MovieAdapter {
             it.let { item ->
-                Toast.makeText(requireContext(), item.id.toString(), Toast.LENGTH_SHORT).show()
+                val bottomSheetFragment =
+                    DetailFragment().apply {
+                        arguments =
+                            Bundle().apply {
+                                putParcelable(DetailFragment.EXTRAS_MOVIE, item)
+                            }
+                    }
+                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
             }
         }
     }
     private val moviePopularAdapter: MovieAdapter by lazy {
         MovieAdapter {
             it.let { item ->
-                Toast.makeText(requireContext(), item.id.toString(), Toast.LENGTH_SHORT).show()
+                val bottomSheetFragment =
+                    DetailFragment().apply {
+                        arguments =
+                            Bundle().apply {
+                                putParcelable(DetailFragment.EXTRAS_MOVIE, item)
+                            }
+                    }
+                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
             }
         }
     }
     private val movieUpcomingAdapter: MovieAdapter by lazy {
         MovieAdapter {
             it.let { item ->
-                Toast.makeText(requireContext(), item.id.toString(), Toast.LENGTH_SHORT).show()
+                val bottomSheetFragment =
+                    DetailFragment().apply {
+                        arguments =
+                            Bundle().apply {
+                                putParcelable(DetailFragment.EXTRAS_MOVIE, item)
+                            }
+                    }
+                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
             }
         }
     }
     private val movieTopRelatedAdapter: MovieAdapter by lazy {
         MovieAdapter {
             it.let { item ->
-                Toast.makeText(requireContext(), item.id.toString(), Toast.LENGTH_SHORT).show()
+                val bottomSheetFragment =
+                    DetailFragment().apply {
+                        arguments =
+                            Bundle().apply {
+                                putParcelable(DetailFragment.EXTRAS_MOVIE, item)
+                            }
+                    }
+                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
             }
         }
     }
@@ -112,6 +142,18 @@ class HomeFragment : Fragment() {
                 }
             startActivity(intent)
         }
+        binding.layoutBanner.icInfo.setOnClickListener {
+            currentMovie?.let {
+                val bottomSheetFragment =
+                    DetailFragment().apply {
+                        arguments =
+                            Bundle().apply {
+                                putParcelable(DetailFragment.EXTRAS_MOVIE, it)
+                            }
+                    }
+                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+            }
+        }
     }
 
     private fun shareContentIntent(movies: Movie) {
@@ -154,6 +196,7 @@ class HomeFragment : Fragment() {
         val randomMovie = nowPlayingMovieLoaded?.get(Random.nextInt(nowPlayingMovieLoaded!!.size))
         randomMovie?.let {
             updateBanner(randomMovie)
+            currentMovie = it
             shareContentIntent(randomMovie)
         }
     }
