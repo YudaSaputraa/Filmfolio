@@ -7,6 +7,14 @@
     tools:context=".presentation.detail.DetailFragment">
 
     <include
+        android:id="@+id/layout_state"
+        layout="@layout/layout_content_state"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
         android:id="@+id/layout_banner"
         layout="@layout/layout_detail_header"
         android:layout_width="match_parent"

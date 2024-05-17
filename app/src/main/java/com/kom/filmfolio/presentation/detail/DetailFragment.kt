@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.kom.filmfolio.R
@@ -78,11 +79,17 @@ class DetailFragment : BottomSheetDialogFragment() {
             viewModel.getMovieDetailById(it).observe(viewLifecycleOwner) { result ->
                 result.proceedWhen(
                     doOnSuccess = {
+                        binding.layoutState.root.isVisible = false
+                        binding.layoutState.pbLoading.isVisible = false
                         it.payload?.let {
                                 movieDetail ->
                             currentMovie = movieDetail
                             setupBind(movieDetail)
                         }
+                    },
+                    doOnLoading = {
+                        binding.layoutState.root.isVisible = true
+                        binding.layoutState.pbLoading.isVisible = true
                     },
                 )
             }
@@ -98,7 +105,7 @@ class DetailFragment : BottomSheetDialogFragment() {
             binding.layoutBanner.ivMovieImage.load(baseUrl + it.posterPath) {
                 crossfade(true)
             }
-            binding.layoutBanner.tvMovieTitle.text = it.originalTitle
+            binding.layoutBanner.tvMovieTitle.text = it.title
             binding.layoutBanner.tvDetailMovieInformation.text = context?.getString(R.string.text_dates, it.releaseDate, it.voteAverage.toString())
             binding.layoutDescription.tvDetailDescription.text = it.overview
         }
