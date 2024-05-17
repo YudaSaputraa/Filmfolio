@@ -1,12 +1,12 @@
 package com.kom.filmfolio.presentation.seemore
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.kom.filmfolio.R
 import com.kom.filmfolio.databinding.ActivitySeeMoreBinding
+import com.kom.filmfolio.presentation.detail.DetailFragment
 import com.kom.filmfolio.presentation.seemore.adapter.MoviePagingAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -19,8 +19,15 @@ class SeeMoreActivity : AppCompatActivity() {
 
     private val seeMoreViewModel: SeeMoreViewModel by viewModel()
     private val pagingAdapter =
-        MoviePagingAdapter(MoviePagingAdapter.UserComparator) {
-            Toast.makeText(this, it.id.toString(), Toast.LENGTH_SHORT).show()
+        MoviePagingAdapter(MoviePagingAdapter.UserComparator) { item ->
+            val bottomSheetFragment =
+                DetailFragment().apply {
+                    arguments =
+                        Bundle().apply {
+                            putParcelable(DetailFragment.EXTRAS_MOVIE, item)
+                        }
+                }
+            bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {

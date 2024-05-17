@@ -37,28 +37,56 @@ class HomeFragment : Fragment() {
     private val movieNowPlayingAdapter: MovieAdapter by lazy {
         MovieAdapter {
             it.let { item ->
-                Toast.makeText(requireContext(), item.id.toString(), Toast.LENGTH_SHORT).show()
+                val bottomSheetFragment =
+                    DetailFragment().apply {
+                        arguments =
+                            Bundle().apply {
+                                putParcelable(DetailFragment.EXTRAS_MOVIE, item)
+                            }
+                    }
+                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
             }
         }
     }
     private val moviePopularAdapter: MovieAdapter by lazy {
         MovieAdapter {
             it.let { item ->
-                Toast.makeText(requireContext(), item.id.toString(), Toast.LENGTH_SHORT).show()
+                val bottomSheetFragment =
+                    DetailFragment().apply {
+                        arguments =
+                            Bundle().apply {
+                                putParcelable(DetailFragment.EXTRAS_MOVIE, item)
+                            }
+                    }
+                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
             }
         }
     }
     private val movieUpcomingAdapter: MovieAdapter by lazy {
         MovieAdapter {
             it.let { item ->
-                Toast.makeText(requireContext(), item.id.toString(), Toast.LENGTH_SHORT).show()
+                val bottomSheetFragment =
+                    DetailFragment().apply {
+                        arguments =
+                            Bundle().apply {
+                                putParcelable(DetailFragment.EXTRAS_MOVIE, item)
+                            }
+                    }
+                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
             }
         }
     }
     private val movieTopRelatedAdapter: MovieAdapter by lazy {
         MovieAdapter {
             it.let { item ->
-                Toast.makeText(requireContext(), item.id.toString(), Toast.LENGTH_SHORT).show()
+                val bottomSheetFragment =
+                    DetailFragment().apply {
+                        arguments =
+                            Bundle().apply {
+                                putParcelable(DetailFragment.EXTRAS_MOVIE, item)
+                            }
+                    }
+                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
             }
         }
     }

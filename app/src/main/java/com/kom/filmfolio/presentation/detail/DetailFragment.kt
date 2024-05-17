@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.kom.filmfolio.R
 import com.kom.filmfolio.data.model.MovieDetail
 import com.kom.filmfolio.databinding.FragmentDetailBinding
 import com.kom.filmfolio.utils.proceedWhen
@@ -15,7 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class DetailFragment : BottomSheetDialogFragment() {
-    private var currentMovie: MovieDetail? = null
+    private lateinit var currentMovie: MovieDetail
 
     private lateinit var binding: FragmentDetailBinding
     private val viewModel: DetailViewModel by viewModel {
@@ -51,16 +52,16 @@ class DetailFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun share(movie: MovieDetail?) {
-        val backdropUrl = movie?.backdropPath?.isEmpty()
-        if (backdropUrl!!) {
+    private fun share(movie: MovieDetail) {
+        val backdropUrl = movie.backdropPath
+        if (backdropUrl.isNotEmpty()) {
             val baseUrlImage = "https://image.tmdb.org/t/p/original"
             val shareIntent: Intent =
                 Intent().apply {
                     action = Intent.ACTION_SEND
                     putExtra(
                         Intent.EXTRA_TEXT,
-                        "Check out this movie! \n ${baseUrlImage + movie.backdropPath}",
+                        "Check out this `${movie.originalTitle}`! \n ${baseUrlImage + backdropUrl}",
                     )
                     type = "text/*"
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -98,6 +99,7 @@ class DetailFragment : BottomSheetDialogFragment() {
                 crossfade(true)
             }
             binding.layoutBanner.tvMovieTitle.text = it.originalTitle
+            binding.layoutBanner.tvDetailMovieInformation.text = context?.getString(R.string.text_dates, it.releaseDate, it.voteAverage.toString())
             binding.layoutDescription.tvDetailDescription.text = it.overview
         }
     }

@@ -98,7 +98,6 @@ class MovieRepositoryImpl(
     ): Flow<ResultWrapper<MovieDetail>> {
         return flow {
             emit(ResultWrapper.Loading())
-            delay(500)
             val result = dataSource.getDetailMovieById(id = id, language = language).toMovieDetail()
             emit(ResultWrapper.Success(result))
         }
