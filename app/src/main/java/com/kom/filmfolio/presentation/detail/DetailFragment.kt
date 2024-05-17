@@ -1,0 +1,108 @@
+package com.kom.filmfolio.presentation.detail
+
+import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import coil.load
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.kom.filmfolio.data.model.MovieDetail
+import com.kom.filmfolio.databinding.FragmentDetailBinding
+import com.kom.filmfolio.utils.proceedWhen
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
+
+class DetailFragment : BottomSheetDialogFragment() {
+    private var currentMovie: MovieDetail? = null
+
+    private lateinit var binding: FragmentDetailBinding
+    private val viewModel: DetailViewModel by viewModel {
+        parametersOf(arguments)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
+        // Inflate the layout for this fragment
+        binding = FragmentDetailBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
+        observeData()
+        onClickAction()
+    }
+
+    private fun onClickAction() {
+        binding.layoutDescription.btnShare.setOnClickListener {
+            share(currentMovie)
+        }
+    }
+
+    private fun share(movie: MovieDetail?) {
+        val backdropUrl = movie?.backdropPath?.isEmpty()
+        if (backdropUrl!!) {
+            val baseUrlImage = "https://image.tmdb.org/t/p/original"
+            val shareIntent: Intent =
+                Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        "Check out this movie! \n ${baseUrlImage + movie.backdropPath}",
+                    )
+                    type = "text/*"
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+            startActivity(Intent.createChooser(shareIntent, null))
+        } else {
+            Toast.makeText(requireContext(), "No backdrop image available", Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
+    private fun observeData() {
+        viewModel.movie?.id?.let {
+            viewModel.getMovieDetailById(it).observe(viewLifecycleOwner) { result ->
+                result.proceedWhen(
+                    doOnSuccess = {
+                        it.payload?.let {
+                                movieDetail ->
+                            currentMovie = movieDetail
+                            setupBind(movieDetail)
+                        }
+                    },
+                )
+            }
+        }
+    }
+
+    private fun setupBind(movie: MovieDetail?) {
+        val baseUrl = "https://image.tmdb.org/t/p/w500/"
+        movie?.let {
+            binding.layoutBanner.ivMovieBackground.load(baseUrl + it.backdropPath) {
+                crossfade(true)
+            }
+            binding.layoutBanner.ivMovieImage.load(baseUrl + it.posterPath) {
+                crossfade(true)
+            }
+            binding.layoutBanner.tvMovieTitle.text = it.originalTitle
+            binding.layoutDescription.tvDetailDescription.text = it.overview
+        }
+    }
+
+    companion object {
+        const val EXTRAS_MOVIE = "EXTRAS_MOVIE"
+    }
+}

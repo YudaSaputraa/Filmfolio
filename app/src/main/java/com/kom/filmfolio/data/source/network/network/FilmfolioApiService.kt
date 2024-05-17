@@ -46,7 +46,7 @@ interface FilmfolioApiService {
     @GET("3/movie/{id}")
     suspend fun getDetailMovieById(
         @Path("id") id: Int,
-        @Query("language") language: String,
+        @Query("language") language: String? = "en-US",
     ): DetailMovieResponse
 
     @GET("3/genre/movie/list")

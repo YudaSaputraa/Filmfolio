@@ -1,5 +1,6 @@
 package com.kom.filmfolio.data.datasource.movie
 
+import com.kom.filmfolio.data.source.network.model.detail.DetailMovieResponse
 import com.kom.filmfolio.data.source.network.model.movie.MovieResponse
 import com.kom.filmfolio.data.source.network.network.FilmfolioApiService
 
@@ -36,5 +37,12 @@ class MovieApiDataSource(
         page: Int,
     ): MovieResponse {
         return service.getUpcomingMovie(language, page)
+    }
+
+    override suspend fun getDetailMovieById(
+        id: Int,
+        language: String?,
+    ): DetailMovieResponse {
+        return service.getDetailMovieById(id = id, language = language)
     }
 }
