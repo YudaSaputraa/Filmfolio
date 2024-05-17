@@ -36,7 +36,9 @@ class HomeFragment : Fragment() {
 
     private val movieNowPlayingAdapter: MovieAdapter by lazy {
         MovieAdapter {
+
             it.let { item ->
+                Toast.makeText(requireContext(), item.id.toString(), Toast.LENGTH_SHORT).show()
                 val bottomSheetFragment =
                     DetailFragment().apply {
                         arguments =

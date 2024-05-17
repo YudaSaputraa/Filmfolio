@@ -1,5 +1,6 @@
 package com.kom.filmfolio.presentation.mylist
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -16,7 +17,12 @@ Github : https://github.com/YudaSaputraa
 class MyListViewModel(
     private val myListMovieRepository: MyListMovieRepository,
 ) : ViewModel() {
-    fun getAllFavorite() = myListMovieRepository.getAllMyListMovie().asLiveData(Dispatchers.IO)
+    fun getAllFavorite() =
+        myListMovieRepository.getAllMyListMovie().asLiveData(Dispatchers.IO).also {
+            it.observeForever { result ->
+                Log.d("MyListViewModel", "Received result: $result")
+            }
+        }
 
     fun deleteFavorite(item: Favourite) {
         viewModelScope.launch(Dispatchers.IO) {

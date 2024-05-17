@@ -9,8 +9,8 @@ import com.kom.filmfolio.data.source.local.database.entity.FavouriteEntity
 
 @Database(
     entities = [FavouriteEntity::class],
-    version = 3,
-    exportSchema = false,
+    version = 1,
+    exportSchema = true,
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun appDao(): FavDao
