@@ -32,7 +32,7 @@ An easy-to-use app to browse Now Playing, Popular, Upcoming, and Top Rated movie
 #### Get Now Playing Movie
 
 ```http
-  GET movie/now_playing
+GET movie/now_playing
 ```
 
 | Query | Type     | Description                |
@@ -46,7 +46,7 @@ An easy-to-use app to browse Now Playing, Popular, Upcoming, and Top Rated movie
 #### Get Upcoming Movie
 
 ```http
-  GET movie/upcoming
+GET movie/upcoming
 ```
 
 | Query | Type     | Description                |
@@ -59,7 +59,7 @@ An easy-to-use app to browse Now Playing, Popular, Upcoming, and Top Rated movie
 #### Get Popular Movie
 
 ```http
-  GET movie/popular
+GET movie/popular
 ```
 
 | Query | Type     | Description                |
@@ -73,7 +73,7 @@ An easy-to-use app to browse Now Playing, Popular, Upcoming, and Top Rated movie
 #### Get Top Rated Movie
 
 ```http
-  GET movie/top_rated
+GET movie/top_rated
 ```
 
 | Query | Type     | Description                |
