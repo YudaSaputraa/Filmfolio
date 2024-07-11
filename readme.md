@@ -27,7 +27,7 @@ An easy-to-use app to browse Now Playing, Popular, Upcoming, and Top Rated movie
 - See More Section: If you click on "See More" in any section of the home feed, it will open a paginated list of movies based on the section type.
 
 ## Filmfolio API Used
-[TMDB api] (https://developer.themoviedb.org/reference/intro/getting-started)
+[TMDB api](https://developer.themoviedb.org/reference/intro/getting-started)
 
 #### Get Now Playing Movie
 
